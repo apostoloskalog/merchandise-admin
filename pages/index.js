@@ -10,10 +10,12 @@ export default function Home() {
       if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
         throw new Error("Missing Supabase environment variables");
       }
+
       const client = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
       );
+
       setSupabase(client);
     } catch (err) {
       setError(err.message);
@@ -33,3 +35,4 @@ export default function Home() {
     </main>
   );
 }
+
