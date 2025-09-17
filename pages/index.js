@@ -7,18 +7,13 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      console.log("SUPABASE_URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-      console.log("SUPABASE_KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-
       if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
         throw new Error("Missing Supabase environment variables");
       }
-
       const client = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
       );
-
       setSupabase(client);
     } catch (err) {
       setError(err.message);
