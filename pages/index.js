@@ -1,17 +1,28 @@
-import { useState } from "react";
+'use client';
+
+import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 export default function Home() {
+  const [supabase, setSupabase] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
 
-  // ✅ create Supabase client inside component (runs only in browser)
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  useEffect(() => {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (supabaseUrl && supabaseAnonKey) {
+      setSupabase(createClient(supabaseUrl, supabaseAnonKey));
+    }
+  }, []);
 
   const handleSave = async () => {
+    if (!supabase) {
+      alert("❌ Supabase not initialized");
+      return;
+    }
+
     const { error } = await supabase
       .from("projects")
       .insert([{ title, description, start_date: date }]);
@@ -81,4 +92,3 @@ export default function Home() {
     </div>
   );
 }
-
