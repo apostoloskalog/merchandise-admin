@@ -1,13 +1,24 @@
 import { useState } from "react";
-import { format } from "date-fns";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Home() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
 
-  const handleSave = () => {
-    alert(`Saved Project:\nTitle: ${title}\nDescription: ${description}\nStart: ${date}`);
+  const handleSave = async () => {
+    const { error } = await supabase
+      .from("projects")
+      .insert([{ title, description, start_date: date }]);
+
+    if (error) {
+      alert("❌ Error: " + error.message);
+    } else {
+      alert("✅ Project saved to Supabase!");
+      setTitle("");
+      setDescription("");
+      setDate("");
+    }
   };
 
   return (
