@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
 export default function Home() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+
+  // ✅ create Supabase client inside component (runs only in browser)
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
   const handleSave = async () => {
     const { error } = await supabase
@@ -76,3 +81,4 @@ export default function Home() {
     </div>
   );
 }
+
